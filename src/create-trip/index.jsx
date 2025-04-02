@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SelectBudgetOptions, SelectTravelsList } from '@/constants/options';
+import { AI_PROMPT, SelectBudgetOptions, SelectTravelsList } from '@/constants/options';
+import { chatSession } from '@/service/AIModal';
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
-import toast from 'react-hot-toast';
+import { toast } from "sonner"
 
 export default function CreateTrip() {
     const [place, setPlace] = useState();
@@ -22,11 +23,7 @@ export default function CreateTrip() {
     }, [formData])
 
 
-    const OnGenrateTrip = () => {
-        if (formData.noOfDays > 5) {
-            toast.error("Please select a minimum of 5 days for your trip")
-            return;
-        }
+    const OnGenrateTrip = async () => {
 
         if (!formData.location) {
             toast.error("Please select a location")
@@ -44,19 +41,29 @@ export default function CreateTrip() {
             toast.error("Please select number of days")
             return;
         }
+
+        if (formData.noOfDays > 5) {
+            toast.error("Please select a minimum of 5 days for your trip")
+            return;
+        }
+
         if (formData.noOfDays < 1) {
             toast.error("Please select a minimum of 1 days for your trip")
             return;
         }
 
-        const tripData = {
-            location: formData.location,
-            budget: formData.budget,
-            traveler: formData.traveler,
-            noOfDays: formData.noOfDays,
-        }
+        const FINAL_PROMPT = AI_PROMPT
+            .replace('{location}', formData?.location?.label)
+            .replace('{totalDays}', formData?.noOfDays)
+            .replace('{traveler}', formData?.traveler)
+            .replace('{budget}', formData?.budget)
+            .replace('{totalDays}', formData?.noOfDays)
 
-        console.log(tripData)
+        console.log(FINAL_PROMPT)
+
+        const result = await chatSession.sendMessage(FINAL_PROMPT);
+
+        console.log("result", result?.response?.text());
     }
 
     return (

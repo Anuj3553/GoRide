@@ -5,7 +5,7 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CreateTrip from './create-trip'
 import Header from './components/ui/custom/Header'
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "@/components/ui/sonner"
 
 const router = createBrowserRouter([
   {
