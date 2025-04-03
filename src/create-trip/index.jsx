@@ -19,6 +19,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/service/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CreateTrip() {
@@ -28,6 +29,7 @@ export default function CreateTrip() {
     const [openDialog, setOpenDialog] = useState(false);
 
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
     const handleInputChange = (name, value) => {
         setFormData({
@@ -105,6 +107,7 @@ export default function CreateTrip() {
         });
 
         setLoading(false)
+        navigate(`/view-trip/${docId}`)
     }
 
     const GetUserProfile = (tokenInfo) => {
