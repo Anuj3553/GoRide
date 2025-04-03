@@ -5,11 +5,24 @@ import { chatSession } from '@/service/AIModal';
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 import { toast } from "sonner"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+
 
 export default function CreateTrip() {
-    const [place, setPlace] = useState();
+    const [place, setPlace] = useState(null);
 
-    const [formData, setFormData] = useState([]);
+    const [formData, setFormData] = useState({});
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleInputChange = (name, value) => {
         setFormData({
@@ -22,8 +35,19 @@ export default function CreateTrip() {
         console.log(formData)
     }, [formData])
 
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => GetUserProfile(codeResponse),
+        onError: (error) => console.log('Login Failed:', error),
+    })
 
     const OnGenrateTrip = async () => {
+
+        const user = localStorage.getItem('user')
+
+        if (!user) {
+            setOpenDialog(true)
+            return;
+        }
 
         if (!formData.location) {
             toast.error("Please select a location")
@@ -42,13 +66,8 @@ export default function CreateTrip() {
             return;
         }
 
-        if (formData.noOfDays > 5) {
-            toast.error("Please select a minimum of 5 days for your trip")
-            return;
-        }
-
-        if (formData.noOfDays < 1) {
-            toast.error("Please select a minimum of 1 days for your trip")
+        if (formData.noOfDays < 1 || formData.noOfDays > 5) {
+            toast.error("Please select between 1 to 5 days for your trip");
             return;
         }
 
@@ -64,6 +83,23 @@ export default function CreateTrip() {
         const result = await chatSession.sendMessage(FINAL_PROMPT);
 
         console.log("result", result?.response?.text());
+    }
+
+    const GetUserProfile = (tokenInfo) => {
+        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo.access_token}`, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.access_token}`,
+                Accept: 'Application/json'
+            }
+        }).then((response) => {
+            console.log(response.data)
+            localStorage.setItem('user', JSON.stringify(response.data))
+            setOpenDialog(false)
+            OnGenrateTrip()
+            toast.success("User logged in successfully")
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     return (
@@ -139,6 +175,29 @@ export default function CreateTrip() {
                     Generate Trip
                 </Button>
             </div>
+
+            {/*  Dialog for user not logged in */}
+            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                <DialogContent>
+                    <div className="flex justify-between items-center">
+                        <DialogHeader>
+                            <DialogTitle className="text-center text-2xl font-bold"></DialogTitle>
+                        </DialogHeader>
+                        <DialogClose />
+                    </div>
+
+                    <div>
+                        <img src="/logo.svg" alt="Logo" />
+                        <h2 className="font-bold text-lg mt-7">Sign In With Google</h2>
+                        <div>Sign in to the App with Google authentication securely</div>
+
+                        <Button onClick={login} className="w-full mt-5 flex gap-4 items-center">
+                            <FcGoogle className="w-7 h-7" />
+                            Sign In With Google
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
