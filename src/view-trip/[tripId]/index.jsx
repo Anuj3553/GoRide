@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import InfoSection from '../components/InfoSection'
 import Hotels from '../components/Hotels'
 import PlacesToVisit from '../components/PlacesToVisit'
+import Footer from '../components/Footer'
 
 export default function ViewTrip() {
     const { tripId } = useParams()
@@ -44,6 +45,7 @@ export default function ViewTrip() {
             <PlacesToVisit trip={trip} />
             
             {/* Footer */}
+            <Footer />
         </div>
     )
 }

@@ -16,3 +16,5 @@ If you are developing a production application, we recommend using TypeScript an
 Generate Travel Plan for Location : Las Vegas, for three days for Couple with a Chap budget, Give me a Hotels options list with HotelName, Hotel address, Price, hotel image url, geo coordinates, rating, descriptions and suggest itinerary with placeName, Place Details, Place Image Url, Geo cordinates, ticket Pricing, Time travel each of the location for 3 days with each day plan with best time to visit in JSON format.
 
 ### npm i @google/generative-ai --legacy-peer-deps
+
+gemini-2.5-pro-exp-03-25, gemini-2.0-flash
