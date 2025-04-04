@@ -45,6 +45,9 @@ export default function Header() {
             <div>
                 {user ?
                     <div className='flex items-center gap-4'>
+                        <a href="/create-trip">
+                            <Button variant="outline" className="rounded-full cursor-pointer">+ Create Trip</Button>
+                        </a>
                         <a href="/my-trips">
                             <Button variant="outline" className="rounded-full cursor-pointer">My Trips</Button>
                         </a>
