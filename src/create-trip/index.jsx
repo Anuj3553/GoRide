@@ -39,7 +39,7 @@ export default function CreateTrip() {
     }
 
     useEffect(() => {
-        console.log(formData)
+        // console.log(formData)
     }, [formData])
 
     const login = useGoogleLogin({
@@ -88,7 +88,7 @@ export default function CreateTrip() {
 
         const result = await chatSession.sendMessage(FINAL_PROMPT);
 
-        console.log("result", result?.response?.text());
+        // console.log("result", result?.response?.text());
         setLoading(false);
         SaveAiTrip(result?.response?.text())
     }
@@ -117,13 +117,13 @@ export default function CreateTrip() {
                 Accept: 'Application/json'
             }
         }).then((response) => {
-            console.log(response.data)
+            // console.log(response.data)
             localStorage.setItem('user', JSON.stringify(response.data))
             setOpenDialog(false)
             OnGenrateTrip()
             toast.success("User logged in successfully")
         }).catch((error) => {
-            console.log(error)
+            console.error(error)
         })
     }
 

@@ -3,7 +3,6 @@ import PlaceCardItem from './PlaceCardItem'
 
 export default function PlacesToVisit({ trip }) {
   return (
-    console.log(trip),
     <div>
       <h2 className='font-bold text-xl mt-5'>Places to Visit</h2>
 

@@ -1,15 +1,18 @@
-import React from 'react'
-import { Button } from '../button'
+import React from 'react';
+import { Button } from '../button';
 
 export default function Header() {
     return (
-        <div className='p-3 shadow-sm flex justify-between items-center px-5'>
-            <a href="/">
-                <img src="/logo.svg" alt="logo" />
+        <header className="p-4 shadow-md bg-white flex justify-between items-center relative">
+            <a href="/" className="flex items-center">
+                <img src="/logo.png" className="h-12 w-auto" alt="GoRide Logo" />
+                <span className="ml-3 text-xl font-bold text-gray-800">GoRide</span>
             </a>
             <div>
-                <Button>Sign in</Button>
+                <Button className="px-4 py-2 rounded">
+                    Sign in
+                </Button>
             </div>
-        </div>
-    )
+        </header>
+    );
 }

@@ -1,16 +1,33 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import { GetPlaceDetails, PHOTO_REF_URL } from "@/service/GlobalAPI";
+import React, { useEffect, useState } from "react";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 export default function PlaceCardItem({ place }) {
+    const [photoUrl, setPhotoUrl] = useState(null)
+
+    useEffect(() => {
+        const GetPlacePhoto = async () => {
+            const data = { textQuery: place?.placeName }
+            const result = await GetPlaceDetails(data)
+            // console.log(result.places[0].photos[3].name)
+            const PhotoUrl = PHOTO_REF_URL.replace("{NAME}", result.places[0].photos[4].name)
+            setPhotoUrl(PhotoUrl)
+        }
+
+        if (place?.placeName) {
+            GetPlacePhoto()
+        }
+    }, [place?.placeName])
+
     return (
         <div className="border rounded-2xl p-4 mt-3 flex flex-col md:flex md:flex-row items-center gap-6 hover:scale-105 transition-all duration-300 ease-in-out hover:shadow-lg bg-white sm:gap-4 md:gap-6 lg:gap-8 xl:gap-10">
             {/* Image */}
             <img
-                src="/placeholder.png"
-                className="md:w-[150px] md:h-[120px] w-full md:object-bottom rounded-2xl object-cover shadow-md"
+                src={photoUrl || '/placeholder.png'}
                 alt={place.placeName}
+                className="md:w-[150px] md:h-[120px] w-full md:object-bottom rounded-2xl object-cover shadow-md"
             />
 
             {/* Content */}
