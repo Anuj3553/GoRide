@@ -45,7 +45,9 @@ export default function Header() {
             <div>
                 {user ?
                     <div className='flex items-center gap-4'>
-                        <Button variant="outline" className="rounded-full">My Trips</Button>
+                        <a href="/my-trips">
+                            <Button variant="outline" className="rounded-full cursor-pointer">My Trips</Button>
+                        </a>
                         <Popover>
                             <PopoverTrigger>
                                 <img src={user?.picture} className='h-[35px] w-[35px] rounded-full' />
