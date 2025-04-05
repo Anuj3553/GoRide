@@ -18,6 +18,8 @@ export default function Hero() {
             <Link to="/create-trip">
                 <Button className="p-4">Get Started, It's Free</Button>
             </Link>
+
+            <img src="/landing.png" className='-mt-7' />
         </div>
     )
 }
