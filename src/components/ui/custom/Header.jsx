@@ -53,11 +53,11 @@ export default function Header() {
                         </a>
                         <Popover>
                             <PopoverTrigger>
-                                <img src={user?.picture} className='h-[35px] w-[35px] rounded-full' />
+                                <img src={user?.picture} className='h-[35px] w-[35px] rounded-full cursor-pointer' />
                             </PopoverTrigger>
                             <PopoverContent>
                                 <h2
-                                    className='cursor-pointer'
+                                    className='cursor-pointer hover:bg-gray-100 p-2 rounded-md'
                                     onClick={() => {
                                         googleLogout();
                                         window.localStorage.removeItem('user');
